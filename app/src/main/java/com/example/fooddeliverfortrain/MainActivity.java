@@ -13,6 +13,8 @@ import com.example.fooddeliverfortrain.rider.RiderLogin;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.parse.Parse;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btn_customer;
@@ -23,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("KSDJFKDJ9DKFDJDKF")
+                .server("http://127.0.0.1:1337/parse")
+                .build()
+        );
 
         btn_customer = findViewById(R.id.btn_customer);
         btn_rider = findViewById(R.id.btn_rider);
