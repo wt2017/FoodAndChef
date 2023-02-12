@@ -1,0 +1,68 @@
+apply plugin: "com.android.library"
+apply plugin: "maven-publish"
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        consumerProguardFiles "release-proguard.pro"
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled = true
+            buildConfigField("String","PARSE_VERSION","\"${version}\"")
+        }
+        release {
+            minifyEnabled false
+            testCoverageEnabled = false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField("String","PARSE_VERSION","\"${version}\"")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+ext {
+    // Note: Don't update past 3.12.x, as it sets the minSdk to Android 5.0
+    okhttpVersion = "3.12.10"
+}
+
+dependencies {
+    api "androidx.annotation:annotation:1.2.0"
+    api "androidx.core:core:1.6.0"
+    api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    api project(':bolts-tasks')
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.robolectric:robolectric:4.6"
+    testImplementation "org.skyscreamer:jsonassert:1.5.0"
+    testImplementation "org.mockito:mockito-core:3.9.0"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
+}

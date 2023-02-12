@@ -8,3 +8,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Food Deliver for Train"
 include ':app'
+include ':bolts-tasks'
+include ':parse'
